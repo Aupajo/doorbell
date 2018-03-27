@@ -1,9 +1,21 @@
 require 'rack/request'
 
-run lambda do |env|
-  request = Rack::Request.new(env)
+class Response
+  STATUS = 200
+  HEADERS = {}
 
-  puts request.params.inspect
+  def initialize(env)
+    @request = Rack::Request.new(env)
+  end
 
-  [200, {}, ["OK"]]
+  def body
+    puts @request.params.inspect
+    "TBC"
+  end
+
+  def to_a
+    [STATUS, HEADERS, [body]]
+  end
 end
+
+run -> (env) { Response.new(env).to_a }
